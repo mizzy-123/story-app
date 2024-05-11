@@ -2,10 +2,13 @@ package com.bangkit.storyapp.api
 
 import com.bangkit.storyapp.data.model.response.LoginResponse
 import com.bangkit.storyapp.data.model.response.RegisterResponse
+import com.bangkit.storyapp.data.model.response.StoriesResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -24,4 +27,11 @@ interface ApiService {
         @Field("password") password: String
     ): Call<LoginResponse>
 
+    @Multipart
+    @POST("stories")
+    fun postStories(
+        @Path("description") description: String,
+        @Path("lat") lat: Float? = null,
+        @Path("lon") lon: Float? = null
+    ): Call<StoriesResponse>
 }
