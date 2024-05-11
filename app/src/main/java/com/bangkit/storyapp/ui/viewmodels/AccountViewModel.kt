@@ -11,27 +11,35 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AccountViewModel: ViewModel() {
-    fun login(con: Context, email: String, password: String){
+    fun login(con: Context, email: String, password: String, callback: (String?) -> Unit){
         RetrofitClient.instance.login(email, password).enqueue(object : Callback<LoginResponse>{
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful){
+                    val responseLogin = response.body()
+                    val tokenResponse = responseLogin?.loginResult?.token
+
+                    callback(tokenResponse)
                     Toast.makeText(con, "Login successfull", Toast.LENGTH_SHORT).show()
+                } else {
+                    callback(null)
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                callback(null)
                 Toast.makeText(con, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    fun register(con: Context, username: String, email: String, password: String){
+    fun register(con: Context, username: String, email: String, password: String, callback: () -> Unit){
         RetrofitClient.instance.register(username, email, password).enqueue(object : Callback<RegisterResponse>{
             override fun onResponse(
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>,
             ) {
                 if (response.isSuccessful){
+                    callback()
                     Toast.makeText(con, "Register successfull", Toast.LENGTH_SHORT).show()
                 }
             }

@@ -2,6 +2,7 @@ package com.bangkit.storyapp.ui.activities
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -52,7 +53,14 @@ class LoginActivity : AppCompatActivity() {
             val email: String = binding.emailEditText.text.toString()
             val password: String = binding.passwordEditText.text.toString()
 
-            accountViewModel.login(this@LoginActivity, email, password)
+            accountViewModel.login(this@LoginActivity, email, password){ token ->
+                if (token != null){
+                    val sharedPreferences = getSharedPreferences("userpref", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("token", token)
+                    editor.apply()
+                }
+            }
         }
     }
 

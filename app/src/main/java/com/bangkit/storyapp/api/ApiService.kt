@@ -1,11 +1,15 @@
 package com.bangkit.storyapp.api
 
+import com.bangkit.storyapp.data.model.response.GetDetailStoryResponse
+import com.bangkit.storyapp.data.model.response.GetStoriesResponse
 import com.bangkit.storyapp.data.model.response.LoginResponse
 import com.bangkit.storyapp.data.model.response.RegisterResponse
-import com.bangkit.storyapp.data.model.response.StoriesResponse
+import com.bangkit.storyapp.data.model.response.PostStoriesResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -40,5 +44,11 @@ interface ApiService {
         @Path("description") description: String,
         @Path("lat") lat: Float? = null,
         @Path("lon") lon: Float? = null
-    ): Call<StoriesResponse>
+    ): Call<PostStoriesResponse>
+
+    @GET("stories")
+    fun getStories(@Header("Authorization") token: String): Call<GetStoriesResponse>
+
+    @GET("stories/{id}")
+    fun getDetailStory(@Header("Authorization") token: String, @Path("id") id: String): Call<GetDetailStoryResponse>
 }
