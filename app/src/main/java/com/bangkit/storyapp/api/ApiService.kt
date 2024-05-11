@@ -27,6 +27,13 @@ interface ApiService {
         @Field("password") password: String
     ): Call<LoginResponse>
 
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun testLogin(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): LoginResponse
+
     @Multipart
     @POST("stories")
     fun postStories(

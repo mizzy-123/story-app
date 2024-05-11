@@ -11,19 +11,27 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityLoginBinding
+import com.bangkit.storyapp.ui.viewmodels.AccountViewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var accountViewModel: AccountViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initComponents()
         setupView()
         setupAction()
         playAnimation()
+    }
+
+    private fun initComponents() {
+        accountViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(AccountViewModel::class.java)
     }
 
     private fun setupView() {
@@ -41,7 +49,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction(){
         binding.loginButton.setOnClickListener {
+            val email: String = binding.emailEditText.text.toString()
+            val password: String = binding.passwordEditText.text.toString()
 
+            accountViewModel.login(this@LoginActivity, email, password)
         }
     }
 
