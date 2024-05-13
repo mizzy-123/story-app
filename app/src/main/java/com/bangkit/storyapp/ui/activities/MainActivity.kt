@@ -2,6 +2,7 @@ package com.bangkit.storyapp.ui.activities
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -22,9 +23,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        cekLogin()
         setupView()
         setupAction()
         playAnimation()
+    }
+
+    private fun cekLogin(){
+        val sharedPreferences = getSharedPreferences("userpref", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        if (token != null){
+            val intent = Intent(this, StoryActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 
     private fun setupView() {

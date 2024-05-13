@@ -62,9 +62,7 @@ class RegisterActivity : AppCompatActivity() {
                 username,
                 email,
                 password
-            ){
-                /* go to intent */
-            }
+            )
         }
     }
 
