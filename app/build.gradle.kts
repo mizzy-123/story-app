@@ -36,6 +36,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -56,4 +57,10 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+
+    // Sweet Alert
+    implementation(libs.sweetalert)
+
+    // Exifinterface
+    implementation(libs.androidx.exifinterface)
 }

@@ -2,6 +2,7 @@ package com.bangkit.storyapp.ui.activities
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityRegisterBinding
 import com.bangkit.storyapp.ui.viewmodels.AccountViewModel
@@ -63,6 +65,31 @@ class RegisterActivity : AppCompatActivity() {
                 email,
                 password
             )
+        }
+
+        accountViewModel.loadingRegister.observe(this){
+            val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog.titleText = "Loading..."
+            pDialog.progressHelper.barColor = Color.parseColor("#2D3D4F")
+            pDialog.setCancelable(false)
+            if (it){
+                pDialog.show()
+            } else {
+                pDialog.dismiss()
+            }
+        }
+
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        pDialog.setTitleText("Success")
+        pDialog.setContentText("Account has been created")
+
+        accountViewModel.isAccountCreated.observe(this){
+
+            if (it){
+                pDialog.show()
+            } else {
+                pDialog.dismiss()
+            }
         }
     }
 

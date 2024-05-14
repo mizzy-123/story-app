@@ -6,6 +6,7 @@ import com.bangkit.storyapp.data.model.response.LoginResponse
 import com.bangkit.storyapp.data.model.response.RegisterResponse
 import com.bangkit.storyapp.data.model.response.PostStoriesResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -43,10 +44,11 @@ interface ApiService {
     @Multipart
     @POST("stories")
     fun postStories(
-        @Path("description") description: String,
+        @Header("Authorization") token: String,
+        @Part("description") description: RequestBody,
         @Part photo: MultipartBody.Part?,
-        @Path("lat") lat: Float? = null,
-        @Path("lon") lon: Float? = null
+        @Part("lat") lat: RequestBody? = null,
+        @Part("lon") lon: RequestBody? = null
     ): Call<PostStoriesResponse>
 
     @GET("stories")

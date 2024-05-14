@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityLoginBinding
 import com.bangkit.storyapp.ui.viewmodels.AccountViewModel
@@ -51,6 +53,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction(){
         binding.loginButton.setOnClickListener {
+            val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog.titleText = "Loading..."
+            pDialog.progressHelper.barColor = Color.parseColor("#2D3D4F")
+            pDialog.setCancelable(false)
+            pDialog.show()
+
             val email: String = binding.emailEditText.text.toString()
             val password: String = binding.passwordEditText.text.toString()
 
@@ -65,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
+                pDialog.dismiss()
             }
         }
     }

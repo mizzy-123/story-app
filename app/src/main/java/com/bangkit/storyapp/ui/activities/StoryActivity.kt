@@ -1,6 +1,7 @@
 package com.bangkit.storyapp.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -37,13 +38,9 @@ class StoryActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.toolBar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
-                R.id.add_story -> {
-                    true
-                }
-                else -> false
-            }
+        binding.fab.setOnClickListener {
+            val intent = Intent(this@StoryActivity, AddStoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
