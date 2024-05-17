@@ -16,6 +16,8 @@ import com.bangkit.storyapp.data.model.response.Story
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,9 +47,19 @@ class StoryViewModel: ViewModel() {
                     val dataResponse = response.body()
                     callback(dataResponse?.listStory)
                 } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(cont, "Failure: $errorMessage", Toast.LENGTH_SHORT).show()
-                    Log.e("getStories", "Failure: $errorMessage")
+                    val errorBody = response.errorBody()?.string()
+                    errorBody?.let {
+                        try {
+                            val jsonObject = JSONObject(it)
+                            val errorMessage = jsonObject.getString("message")
+                            println("Error: $errorMessage")
+                            Toast.makeText(cont, cont.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
+                            Log.e("getStories", "Failure: $errorMessage")
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(cont, cont.getString(R.string.alert_failure, "Error parsing error message"), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     callback(null)
                 }
             }
@@ -84,8 +96,18 @@ class StoryViewModel: ViewModel() {
                     _loadingPostStories.value = false
                     _isStoriesCreated.value = true
                 } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(cont, cont.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()?.string()
+                    errorBody?.let {
+                        try {
+                            val jsonObject = JSONObject(it)
+                            val errorMessage = jsonObject.getString("message")
+                            println("Error: $errorMessage")
+                            Toast.makeText(cont, cont.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(cont, cont.getString(R.string.alert_failure, "Error parsing error message"), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
                 _loadingPostStories.value = false

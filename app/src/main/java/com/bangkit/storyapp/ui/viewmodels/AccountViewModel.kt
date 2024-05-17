@@ -64,12 +64,20 @@ class AccountViewModel: ViewModel() {
                 response: Response<RegisterResponse>,
             ) {
                 if (response.isSuccessful){
-                    val intent = Intent(con, LoginActivity::class.java)
-                    con.startActivity(intent)
                     _isAccountCreated.value = true
                 } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(con, "Failure: $errorMessage", Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()?.string()
+                    errorBody?.let {
+                        try {
+                            val jsonObject = JSONObject(it)
+                            val errorMessage = jsonObject.getString("message")
+                            println("Error: $errorMessage")
+                            Toast.makeText(con, con.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(con, con.getString(R.string.alert_failure, "Error parsing error message"), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
                 _loadingRegister.value = false
@@ -78,6 +86,7 @@ class AccountViewModel: ViewModel() {
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 Toast.makeText(con, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
                 _loadingRegister.value = true
+                _loadingRegister.value = false
             }
 
         })
