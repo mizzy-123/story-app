@@ -15,9 +15,13 @@
     <string name="logout">Keluar</string>
     <string name="alert_password">Password tidak boleh kurang dari 8 karakter</string>
     <string name="home_title">Dicoding Story</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="description">Description</string>
     <string name="upload">Upload</string>
+    <string name="log_out">Log Out</string>
+    <string name="alert_succes">Success</string>
+    <string name="alert_failure">Failure: %1$s</string>
+    <string name="invalid_email_error">Invalid email address</string>
 </resources>

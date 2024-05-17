@@ -6,10 +6,13 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bangkit.storyapp.R
 import com.bangkit.storyapp.api.RetrofitClient
 import com.bangkit.storyapp.data.model.response.LoginResponse
 import com.bangkit.storyapp.data.model.response.RegisterResponse
 import com.bangkit.storyapp.ui.activities.LoginActivity
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,8 +32,18 @@ class AccountViewModel: ViewModel() {
                     Toast.makeText(con, "Login successfull", Toast.LENGTH_SHORT).show()
                     callback(tokenResponse)
                 } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(con, "Failure: $errorMessage", Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()?.string()
+                    errorBody?.let {
+                        try {
+                            val jsonObject = JSONObject(it)
+                            val errorMessage = jsonObject.getString("message")
+                            println("Error: $errorMessage")
+                            Toast.makeText(con, con.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(con, con.getString(R.string.alert_failure, "Error parsing error message"), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     callback(null)
                 }
             }

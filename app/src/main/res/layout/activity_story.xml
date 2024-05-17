@@ -20,7 +20,8 @@
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/home_title"/>
+                app:title="@string/home_title"
+                app:menu="@menu/menu_story"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout

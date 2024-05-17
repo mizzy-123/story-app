@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:menuCategory="container">
         <item
-            android:id="@+id/add_story"
-            android:title="Add Story"
+            android:id="@+id/logout"
+            android:title="@string/log_out"
             app:showAsAction="never"/>
     </group>
 </menu>

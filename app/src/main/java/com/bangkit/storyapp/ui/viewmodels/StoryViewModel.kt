@@ -6,10 +6,13 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bangkit.storyapp.R
 import com.bangkit.storyapp.api.RetrofitClient
+import com.bangkit.storyapp.data.model.response.GetDetailStoryResponse
 import com.bangkit.storyapp.data.model.response.GetStoriesResponse
 import com.bangkit.storyapp.data.model.response.ListStory
 import com.bangkit.storyapp.data.model.response.PostStoriesResponse
+import com.bangkit.storyapp.data.model.response.Story
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,6 +27,12 @@ class StoryViewModel: ViewModel() {
     val loadingPostStories: LiveData<Boolean> = _loadingPostStories
     val _isStoriesCreated = MutableLiveData<Boolean>()
     val isStoriesCreated: LiveData<Boolean> = _isStoriesCreated
+
+    private val _loadingGetDetailStory = MutableLiveData<Boolean>()
+    val loadingGetDetailStory: LiveData<Boolean> = _loadingGetDetailStory
+    private val _getDetailStory = MutableLiveData<Story>()
+    val getDetailStory: LiveData<Story> = _getDetailStory
+
 
     fun getStories(cont: Context, token: String, callback: (List<ListStory>?) -> Unit){
         RetrofitClient.instance.getStories("Bearer $token").enqueue(object : Callback<GetStoriesResponse>{
@@ -76,16 +85,44 @@ class StoryViewModel: ViewModel() {
                     _isStoriesCreated.value = true
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(cont, "Failure: $errorMessage", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(cont, cont.getString(R.string.alert_failure, errorMessage), Toast.LENGTH_SHORT).show()
                 }
 
                 _loadingPostStories.value = false
             }
 
             override fun onFailure(call: Call<PostStoriesResponse>, t: Throwable) {
-                Toast.makeText(cont, "failure: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(cont, cont.getString(R.string.alert_failure, t.message.toString()), Toast.LENGTH_SHORT).show()
                 Log.e("post", t.message.toString())
                 _loadingPostStories.value = false
+            }
+
+        })
+    }
+
+    fun getDetailStories(cont: Context, token: String, id: String, onMessage: (String) -> Unit){
+        _loadingGetDetailStory.value = true
+        RetrofitClient.instance.getDetailStory("Bearer $token", id).enqueue(object : Callback<GetDetailStoryResponse>{
+            override fun onResponse(
+                call: Call<GetDetailStoryResponse>,
+                response: Response<GetDetailStoryResponse>,
+            ) {
+                if (response.isSuccessful){
+                    val getDataStory = response.body()
+                    if (getDataStory != null){
+                        _getDetailStory.value = getDataStory.story
+                    }
+                    onMessage(cont.getString(R.string.alert_succes))
+                } else {
+                    onMessage(cont.getString(R.string.alert_failure, "Something wrong"))
+                }
+
+                _loadingGetDetailStory.value = false
+            }
+
+            override fun onFailure(call: Call<GetDetailStoryResponse>, t: Throwable) {
+                _loadingGetDetailStory.value = false
+                onMessage(cont.getString(R.string.alert_failure, t.message.toString()))
             }
 
         })

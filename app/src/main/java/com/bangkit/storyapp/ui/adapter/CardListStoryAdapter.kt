@@ -1,10 +1,15 @@
 package com.bangkit.storyapp.ui.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.storyapp.data.model.response.ListStory
 import com.bangkit.storyapp.databinding.ItemListCardStoryBinding
+import com.bangkit.storyapp.ui.activities.DetailStoryActivity
 import com.bumptech.glide.Glide
 
 class CardListStoryAdapter(private val stories: ArrayList<ListStory>) :
@@ -28,5 +33,19 @@ class CardListStoryAdapter(private val stories: ArrayList<ListStory>) :
             .into(holder.binding.imgStory)
         holder.binding.judul.text = story.name
         holder.binding.description.text = story.description
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailStoryActivity::class.java)
+            intent.putExtra(DetailStoryActivity.EXTRA_ID, story.id)
+
+            val optionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                holder.itemView.context as Activity,
+                Pair(holder.binding.imgStory, "profile"),
+                Pair(holder.binding.judul, "title"),
+                Pair(holder.binding.description, "description")
+            )
+
+            holder.itemView.context.startActivity(intent, optionsCompat.toBundle())
+        }
     }
 }

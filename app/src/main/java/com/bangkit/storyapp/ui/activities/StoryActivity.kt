@@ -42,6 +42,20 @@ class StoryActivity : AppCompatActivity() {
             val intent = Intent(this@StoryActivity, AddStoryActivity::class.java)
             startActivity(intent)
         }
+
+        binding.toolBar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.logout -> {
+                    val sharedPreferences = getSharedPreferences("userpref", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("token", null)
+                    editor.apply()
+                    finishAffinity()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun initComponents(){
