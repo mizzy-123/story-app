@@ -6,9 +6,9 @@ import com.bangkit.storyapp.data.repository.StoryRepository
 import com.bangkit.storyapp.database.StoryDatabase
 
 object Injection {
-    fun provideRepository(context: Context): StoryRepository {
+    fun provideRepository(context: Context, token: String): StoryRepository {
         val database = StoryDatabase.getDatabase(context)
         val apiService = RetrofitClient.instance
-        return StoryRepository(database, apiService)
+        return StoryRepository(database, apiService, token)
     }
 }

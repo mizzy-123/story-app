@@ -13,7 +13,8 @@ import com.bangkit.storyapp.database.StoryDatabase
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
     private val database: StoryDatabase,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val token: String
 ): RemoteMediator<Int, ListStory>() {
 
     private companion object {
@@ -48,7 +49,7 @@ class StoryRemoteMediator(
         }
 
         try {
-            val responseData = apiService.getStories(page, state.config.pageSize)
+            val responseData = apiService.getStories("Bearer $token", page, state.config.pageSize)
             val getListStory = responseData.listStory
 
             val endOfPaginationReached = getListStory.isEmpty()
