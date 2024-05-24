@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:menuCategory="container">
         <item
+            android:id="@+id/location"
+            android:title="@string/location"
+            android:icon="@drawable/icon_location"
+            app:showAsAction="ifRoom"/>
+        <item
             android:id="@+id/logout"
             android:title="@string/log_out"
             app:showAsAction="never"/>

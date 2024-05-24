@@ -53,7 +53,7 @@ interface ApiService {
     ): Call<PostStoriesResponse>
 
     @GET("stories")
-    fun getStories(@Header("Authorization") token: String): Call<GetStoriesResponse>
+    fun getStories(@Header("Authorization") token: String, @Query("location") location : Int = 1): Call<GetStoriesResponse>
 
     @GET("stories/{id}")
     fun getDetailStory(@Header("Authorization") token: String, @Path("id") id: String): Call<GetDetailStoryResponse>
@@ -62,8 +62,8 @@ interface ApiService {
     fun postStoriesGuest(
         @Path("description") description: String,
         @Part photo: MultipartBody.Part?,
-        @Path("lat") lat: Float? = null,
-        @Path("lon") lon: Float? = null
+        @Path("lat") lat: Double? = null,
+        @Path("lon") lon: Double? = null
     ): Call<PostStoriesResponse>
 
     @GET("stories")

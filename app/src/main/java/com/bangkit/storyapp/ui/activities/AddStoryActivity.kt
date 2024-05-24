@@ -3,6 +3,7 @@ package com.bangkit.storyapp.ui.activities
 import android.annotation.SuppressLint
 import android.app.Instrumentation.ActivityResult
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -72,7 +73,9 @@ class AddStoryActivity : AppCompatActivity() {
 
         storyViewModel.isStoriesCreated.observe(this){
             if (it){
-                finish()
+                val intent = Intent(this@AddStoryActivity, StoryActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
         }
     }

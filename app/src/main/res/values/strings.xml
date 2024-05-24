@@ -25,4 +25,6 @@
     <string name="alert_failure">Failure: %1$s</string>
     <string name="invalid_email_error">Invalid email address</string>
     <string name="retry">Coba Lagi</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="location">Location</string>
 </resources>
