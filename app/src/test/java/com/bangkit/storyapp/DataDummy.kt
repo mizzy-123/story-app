@@ -12,8 +12,8 @@ object DataDummy {
                 description = "description + $i",
                 photoUrl = "photoUrl + $i",
                 createdAt = "createdAt + $i",
-                lat = i.toFloat(),
-                lon = i.toFloat()
+                lat = i.toDouble(),
+                lon = i.toDouble()
             )
             items.add(story)
         }

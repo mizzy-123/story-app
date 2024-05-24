@@ -87,9 +87,6 @@ class StoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener 
             cardStoryListPagingAdapter.submitData(lifecycle, it)
 
             binding.swipe.isRefreshing = false
-
-            // Scroll ke posisi paling atas setelah data berhasil dimuat
-            binding.rvStory.scrollToPosition(0)
         }
 
         // Log untuk melihat apakah ada error dalam load state
